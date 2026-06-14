@@ -52,9 +52,9 @@ class CamofoxClient:
             json={"userId": self.user_id, "sessionKey": "screenshot"},
         )
         data = response.json()
-        if not data.get("ok"):
+        tab_id = data.get("tabId")
+        if not tab_id:
             raise RuntimeError(f"Failed to create tab: {data}")
-        tab_id = data["tabId"]
         logger.debug(f"Created tab: {tab_id}")
         return tab_id
 
