@@ -28,18 +28,18 @@ pip install --quiet --upgrade pip
 pip install --quiet -r "$SCRIPT_DIR/requirements.txt"
 log "Pip packages installed"
 
-# ── npm ──
-if ! command -v npm &> /dev/null; then
-    warn "npm not found. Please install Node.js first."
+# ── Docker ──
+if ! command -v docker &> /dev/null; then
+    warn "Docker not found. Please install Docker first."
 fi
 
-# ── Camofox ──
-if command -v camofox &> /dev/null || command -v camofox-browser &> /dev/null; then
-    log "Camofox is already installed"
+# ── Camofox Docker ──
+if docker ps -a --format '{{.Names}}' | grep -q "^camofox$"; then
+    log "Camofox Docker container already exists"
 else
-    log "Installing Camofox browser (requires sudo)..."
-    sudo npm install -g camofox-browser
-    log "Camofox installed"
+    log "Pulling Camofox Docker image..."
+    docker pull nowsecure/camofox:latest
+    log "Camofox image pulled"
 fi
 
 # ── Data directories ──
