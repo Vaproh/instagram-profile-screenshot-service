@@ -122,7 +122,7 @@ async def readiness():
     "/screenshot/{username}",
     tags=["screenshot"],
     responses={
-        200: {"content": {"image/png": {}}, "description": "Cropped profile screenshot"},
+        200: {"content": {"image/png": {}}, "description": "Profile screenshot (cropped or raw)"},
         400: {"description": "Invalid username"},
         404: {"description": "Profile unavailable"},
         429: {"description": "Rate limit exceeded"},
@@ -131,7 +131,11 @@ async def readiness():
     },
 )
 @limiter.limit(f"{settings.rate_limit_per_minute}/minute")
-async def screenshot(request: Request, username: Annotated[str, Path(min_length=1, max_length=30)]):
+async def screenshot(
+    request: Request,
+    username: Annotated[str, Path(min_length=1, max_length=30)],
+    crop: bool = True,
+):
     if not InstagramUsernameValidator.validate(username):
         logger.warning(f"Invalid username attempted: {username}")
         raise HTTPException(status_code=400, detail="Invalid username")
@@ -172,18 +176,22 @@ async def screenshot(request: Request, username: Annotated[str, Path(min_length=
 
             screenshot_bytes = await client.get_screenshot(tab_id)
 
-            cropped_bytes = process_screenshot(
-                screenshot_bytes,
-                ref_width=settings.crop_ref_width,
-                ref_height=settings.crop_ref_height,
-                left=settings.crop_left,
-                top=settings.crop_top,
-                right=settings.crop_right,
-                bottom=settings.crop_bottom,
-            )
+            if crop:
+                result_bytes = process_screenshot(
+                    screenshot_bytes,
+                    ref_width=settings.crop_ref_width,
+                    ref_height=settings.crop_ref_height,
+                    left=settings.crop_left,
+                    top=settings.crop_top,
+                    right=settings.crop_right,
+                    bottom=settings.crop_bottom,
+                )
+                logger.info(f"Screenshot captured for: {username} ({len(result_bytes)} bytes, cropped)")
+            else:
+                result_bytes = screenshot_bytes
+                logger.info(f"Screenshot captured for: {username} ({len(result_bytes)} bytes, raw)")
 
-            logger.info(f"Screenshot captured for: {username} ({len(cropped_bytes)} bytes)")
-            return Response(content=cropped_bytes, media_type="image/png")
+            return Response(content=result_bytes, media_type="image/png")
 
     except RetryError as e:
         logger.error(f"Retry error capturing {username}: {e}")
