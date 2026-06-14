@@ -115,13 +115,15 @@ class CamofoxClient:
             return False
 
     OVERLAY_PATTERNS = [
-        (r'button "Close" \[(e\d+)\]', "Close"),
         (r'button "Accept all" \[(e\d+)\]', "Accept all"),
         (r'button "Accept All" \[(e\d+)\]', "Accept All"),
         (r'button "Accept cookies" \[(e\d+)\]', "Accept cookies"),
+        (r'button "Accept" \[(e\d+)\]', "Accept"),
         (r'button "Deny all" \[(e\d+)\]', "Deny all"),
+        (r'button "Reject all" \[(e\d+)\]', "Reject all"),
         (r'button "Rejeter tout" \[(e\d+)\]', "Reject all"),
         (r'button "Not now" \[(e\d+)\]', "Not now"),
+        (r'button "Close" \[(e\d+)\]', "Close"),
     ]
 
     def detect_overlay(self, snapshot: str) -> Optional[tuple[str, str]]:
