@@ -15,17 +15,9 @@ class CamofoxClient:
         user_id: str,
         timeout: float = 15.0,
         connect_timeout: float = 2.0,
-        proxy_enabled: bool = False,
-        proxy_server: str = "",
-        proxy_username: str = "",
-        proxy_password: str = "",
     ):
         self.base_url = base_url.rstrip("/")
         self.user_id = user_id
-        self.proxy_enabled = proxy_enabled
-        self.proxy_server = proxy_server
-        self.proxy_username = proxy_username
-        self.proxy_password = proxy_password
         self.timeout = httpx.Timeout(timeout, connect=connect_timeout)
 
     async def _request(

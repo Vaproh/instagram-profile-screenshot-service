@@ -95,10 +95,6 @@ def get_camofox_client() -> CamofoxClient:
         user_id=settings.camofox_user_id,
         timeout=settings.camofox_timeout,
         connect_timeout=settings.camofox_connect_timeout,
-        proxy_enabled=settings.proxy_enabled,
-        proxy_server=settings.proxy_server,
-        proxy_username=settings.proxy_username,
-        proxy_password=settings.proxy_password,
     )
 
 

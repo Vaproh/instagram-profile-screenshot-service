@@ -23,11 +23,6 @@ class Settings(BaseSettings):
 
     log_level: str = "INFO"
 
-    proxy_enabled: bool = False
-    proxy_server: str = ""
-    proxy_username: str = ""
-    proxy_password: str = ""
-
     rate_limit_per_minute: int = 30
 
     crop_ref_width: int = 1280
