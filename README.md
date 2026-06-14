@@ -43,8 +43,8 @@ uvicorn main:app --host 0.0.0.0 --port 8080
 | Status | Body |
 |--------|------|
 | 200 | PNG image |
-| 400 | `{"detail": "Invalid username"}` |
-| 404 | `{"detail": "profile isn't available"}` |
+| 400 | `{"detail": "Invalid username"}` - invalid format (special chars, too long) |
+| 404 | `{"detail": "profile isn't available"}` - deactivated or non-existent |
 | 429 | `{"error": "Rate limit exceeded"}` |
 | 503 | `{"detail": "Camofox browser not available"}` |
 | 504 | `{"detail": "Page load timeout"}` |
