@@ -35,9 +35,13 @@ fi
 
 # ── Clone Camofox repo if not present ──
 CAMOFOX_DIR="/opt/camofox"
+CURRENT_USER=$(whoami)
+CURRENT_GROUP=$(id -gn)
 if [ ! -d "$CAMOFOX_DIR" ]; then
     log "Cloning Camofox browser repo to $CAMOFOX_DIR..."
     sudo git clone https://github.com/jo-inc/camofox-browser.git "$CAMOFOX_DIR"
+    log "Setting ownership to $CURRENT_USER:$CURRENT_GROUP..."
+    sudo chown -R "$CURRENT_USER:$CURRENT_GROUP" "$CAMOFOX_DIR"
 fi
 
 # ── Build Docker image (if not already built) ──
