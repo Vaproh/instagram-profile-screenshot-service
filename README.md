@@ -95,12 +95,16 @@ python main.py
 | `CAMOFOX_USER_ID` | `ig-screenshot-service` | User ID label for Camofox sessions |
 | `CAMOFOX_TIMEOUT` | `15.0` | Request timeout in seconds |
 | `CAMOFOX_CONNECT_TIMEOUT` | `2.0` | Connection timeout in seconds |
-| `PAGE_LOAD_WAIT` | `5.0` | Seconds to wait after navigation |
-| `OVERLAY_DISMISS_WAIT` | `2.0` | Seconds to wait after clicking overlay |
+| `PAGE_LOAD_WAIT` | `3.0` | Seconds to wait after navigation |
+| `OVERLAY_DISMISS_WAIT` | `1.0` | Seconds to wait after clicking overlay |
 | `LOG_LEVEL` | `INFO` | Logging level |
 | `RATE_LIMIT_PER_MINUTE` | `30` | Rate limit per IP |
 | `HOST` | `0.0.0.0` | Server host |
 | `PORT` | `8080` | Server port |
+| `CROP_LEFT` | `610` | Left crop coordinate (for 1280x720) |
+| `CROP_TOP` | `65` | Top crop coordinate |
+| `CROP_RIGHT` | `1210` | Right crop coordinate |
+| `CROP_BOTTOM` | `270` | Bottom crop coordinate |
 
 ## API Endpoints
 
