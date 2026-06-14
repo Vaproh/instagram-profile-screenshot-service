@@ -28,34 +28,6 @@ pip install --quiet --upgrade pip
 pip install --quiet -r "$SCRIPT_DIR/requirements.txt"
 log "Pip packages installed"
 
-# ── Docker ──
-if ! command -v docker &> /dev/null; then
-    warn "Docker not found. Please install Docker first."
-fi
-
-# ── Clone Camofox repo if not present ──
-CAMOFOX_DIR="/opt/camofox"
-CURRENT_USER=$(whoami)
-CURRENT_GROUP=$(id -gn)
-if [ ! -d "$CAMOFOX_DIR" ]; then
-    log "Cloning Camofox browser repo to $CAMOFOX_DIR..."
-    sudo git clone https://github.com/jo-inc/camofox-browser.git "$CAMOFOX_DIR"
-    log "Setting ownership to $CURRENT_USER:$CURRENT_GROUP..."
-    sudo chown -R "$CURRENT_USER:$CURRENT_GROUP" "$CAMOFOX_DIR"
-fi
-
-# ── Build Docker image (if not already built) ──
-if sudo docker images camofox-browser --format "{{.Repository}}" 2>/dev/null | grep -q "^camofox-browser$"; then
-    log "Camofox Docker image already exists"
-else
-    log "Downloading Camoufox binary..."
-    cd "$CAMOFOX_DIR"
-    make fetch
-    log "Building Camofox Docker image (requires sudo, ~1.8GB)..."
-    sudo docker build --no-cache -t camofox-browser .
-    log "Camofox image built"
-fi
-
 # ── Data directories ──
 mkdir -p "$SCRIPT_DIR/data"
 mkdir -p "$SCRIPT_DIR/data/logs"
@@ -64,6 +36,19 @@ mkdir -p "$SCRIPT_DIR/data/logs"
 if [ ! -f "$SCRIPT_DIR/.env" ]; then
     warn ".env not found — copying from .env.example"
     cp "$SCRIPT_DIR/.env.example" "$SCRIPT_DIR/.env"
+fi
+
+# ── Camofox directory ──
+log "Enter the path to your Camofox installation (e.g., /home/user/camofox-browser):"
+read -r CAMOFOX_DIR
+CAMOFOX_DIR=$(eval echo "$CAMOFOX_DIR")
+
+if [ ! -d "$CAMOFOX_DIR" ]; then
+    warn "Directory does not exist. Please install Camofox first."
+    warn "Then edit .env and set CAMOFOX_DIR to the installation path."
+else
+    echo "$CAMOFOX_DIR" > "$SCRIPT_DIR/.camofox_dir"
+    log "Camofox directory saved: $CAMOFOX_DIR"
 fi
 
 log "Setup complete. Run ./start.sh to start the service."

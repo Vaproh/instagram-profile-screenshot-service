@@ -22,6 +22,18 @@ if [ ! -d "$VENV_DIR" ]; then
     exit 1
 fi
 
+if [ ! -f "$SCRIPT_DIR/.camofox_dir" ]; then
+    err "Camofox directory not set. Run ./setup.sh first."
+    exit 1
+fi
+
+CAMOFOX_DIR=$(cat "$SCRIPT_DIR/.camofox_dir")
+
+if [ ! -d "$CAMOFOX_DIR" ]; then
+    err "Camofox directory not found: $CAMOFOX_DIR"
+    exit 1
+fi
+
 mkdir -p "$LOG_DIR"
 
 # ── Kill existing session ──
@@ -42,8 +54,8 @@ tmux new-session -d -s "$SESSION" -n "api" "
 
 # Create Camofox window
 tmux new-window -t "$SESSION" -n "camofox" "
-    echo 'Starting Camofox browser...'
-    sudo docker run --rm --name camofox -p 9377:9377 camofox-browser 2>&1 | tee -a $CAMOFOX_LOG
+    cd $CAMOFOX_DIR
+    npm start 2>&1 | tee -a $CAMOFOX_LOG
 "
 
 sleep 1
@@ -56,6 +68,7 @@ if tmux has-session -t "$SESSION" 2>/dev/null; then
     echo -e "  Session:  ${CYAN}$SESSION${NC}"
     echo -e "  API:      ${CYAN}http://localhost:8080${NC}"
     echo -e "  Health:   ${CYAN}http://localhost:8080/health${NC}"
+    echo -e "  Screenshot: ${CYAN}http://localhost:8080/screenshot/{username}${NC}"
     echo -e ""
     echo -e "  Attach:   ${CYAN}tmux attach -t $SESSION${NC}"
     echo -e "  API log:  ${CYAN}$API_LOG${NC}"
