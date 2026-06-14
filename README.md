@@ -140,16 +140,17 @@ Readiness probe — returns 503 if Camofox is unavailable.
 
 #### `GET /screenshot/{username}`
 
-Capture a cropped screenshot of an Instagram profile.
+Capture a screenshot of an Instagram profile (cropped or raw).
 
 **Parameters:**
 - `username` (path): Instagram username (1-30 characters, alphanumeric with `.` `_`)
+- `crop` (query, optional): Whether to crop to profile header (default: `true`). Set to `false` for full-page screenshot.
 
 **Responses:**
 
 | Status | Description | Body |
 |--------|-------------|------|
-| 200 | Success | Raw PNG image |
+| 200 | Success | PNG image (cropped or raw depending on `crop` param) |
 | 400 | Invalid username | `{"detail": "Invalid username"}` |
 | 404 | Profile unavailable/deactivated | `{"detail": "profile isn't available"}` |
 | 429 | Rate limit exceeded | `{"error": "Rate limit exceeded"}` |
@@ -172,8 +173,11 @@ curl http://localhost:8080/health/live
 # Readiness probe
 curl http://localhost:8080/health/ready
 
-# Screenshot an active profile
+# Screenshot an active profile (cropped, default)
 curl -o test.png http://localhost:8080/screenshot/akiraa.init
+
+# Screenshot with raw full page (no crop)
+curl -o test_raw.png "http://localhost:8080/screenshot/akiraa.init?crop=false"
 
 # Test deactivated profile (returns 404)
 curl http://localhost:8080/screenshot/1lazyxan
