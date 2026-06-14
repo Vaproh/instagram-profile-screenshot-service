@@ -63,7 +63,7 @@ if [ "$PROXY_ENABLED" = "true" ] && [ -n "$PROXY_SERVER" ]; then
         cd $CAMOFOX_DIR
         PROXY_STRATEGY=backconnect \
         PROXY_BACKCONNECT_HOST=$PROXY_SERVER \
-        PROXY_BACKCONNECT_PORT=7000 \
+        PROXY_BACKCONNECT_PORT=823 \
         PROXY_USERNAME=$PROXY_USERNAME \
         PROXY_PASSWORD=$PROXY_PASSWORD \
         npm start 2>&1 | tee -a $CAMOFOX_LOG
