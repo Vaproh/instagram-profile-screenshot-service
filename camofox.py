@@ -63,7 +63,11 @@ class CamofoxClient:
         await self._request(
             "POST",
             f"/tabs/{tab_id}/navigate",
-            json={"url": url, "userId": self.user_id},
+            json={
+                "url": url,
+                "userId": self.user_id,
+                "viewport": {"width": 1280, "height": 720},
+            },
         )
 
     async def get_snapshot(self, tab_id: str) -> str:
