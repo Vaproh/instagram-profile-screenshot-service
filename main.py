@@ -147,8 +147,7 @@ async def screenshot(request: Request, username: Annotated[str, Path(min_length=
             import asyncio
             await asyncio.sleep(settings.page_load_wait)
 
-            max_attempts = 5
-            for attempt in range(max_attempts):
+            for _ in range(10):
                 snapshot = await client.get_snapshot(tab_id)
 
                 if client.is_profile_unavailable(snapshot):
@@ -164,7 +163,12 @@ async def screenshot(request: Request, username: Annotated[str, Path(min_length=
                     await asyncio.sleep(settings.overlay_dismiss_wait)
                     continue
 
+                if client.is_page_loaded(snapshot):
+                    break
+
                 break
+
+            await asyncio.sleep(2)
 
             screenshot_bytes = await client.get_screenshot(tab_id)
 

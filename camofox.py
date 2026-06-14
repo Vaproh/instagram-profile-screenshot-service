@@ -140,6 +140,19 @@ class CamofoxClient:
         ]
         return any(phrase in snapshot for phrase in unavailable_phrases)
 
+    @staticmethod
+    def is_page_loaded(snapshot: str) -> bool:
+        loaded_indicators = [
+            "posts",
+            "followers",
+            "following",
+            "followers",
+            "img",
+        ]
+        snapshot_lower = snapshot.lower()
+        count = sum(1 for ind in loaded_indicators if ind in snapshot_lower)
+        return count >= 2
+
 
 @asynccontextmanager
 async def managed_tab(client: CamofoxClient):
