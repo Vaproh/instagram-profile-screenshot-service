@@ -115,11 +115,13 @@ class CamofoxClient:
             return False
 
     OVERLAY_PATTERNS = [
+        (r'button "Allow all cookies" \[(e\d+)\]', "Allow all cookies"),
         (r'button "Allow All Cookies" \[(e\d+)\]', "Allow All Cookies"),
         (r'button "Accept all" \[(e\d+)\]', "Accept all"),
         (r'button "Accept All" \[(e\d+)\]', "Accept All"),
         (r'button "Accept cookies" \[(e\d+)\]', "Accept cookies"),
         (r'button "Accept" \[(e\d+)\]', "Accept"),
+        (r'button "Decline optional cookies" \[(e\d+)\]', "Decline optional cookies"),
         (r'button "Deny all" \[(e\d+)\]', "Deny all"),
         (r'button "Reject all" \[(e\d+)\]', "Reject all"),
         (r'button "Rejeter tout" \[(e\d+)\]', "Reject all"),
