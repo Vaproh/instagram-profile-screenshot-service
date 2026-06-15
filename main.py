@@ -70,7 +70,8 @@ async def profile_card(username: Annotated[str, Path(min_length=1, max_length=30
 
     proxy_url = ""
     if settings.proxy_enabled and settings.proxy_server:
-        proxy_url = f"http://{settings.proxy_username}:{settings.proxy_password}@{settings.proxy_server}"
+        port = settings.proxy_port or 8291
+        proxy_url = f"http://{settings.proxy_username}:{settings.proxy_password}@{settings.proxy_server}:{port}"
 
     data = fetch_profile(username, proxy_url)
 
