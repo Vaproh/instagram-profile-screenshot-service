@@ -25,7 +25,7 @@ class Settings(BaseSettings):
 
     proxy_enabled: bool = False
     proxy_server: str = ""
-    proxy_port: int = 8291
+    proxy_port: int = 823
     proxy_username: str = ""
     proxy_password: str = ""
 
