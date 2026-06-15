@@ -1,6 +1,6 @@
 import logging
 import random
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from curl_cffi import requests as cffi_requests
 
@@ -9,15 +9,21 @@ logger = logging.getLogger(__name__)
 API_URL = "https://i.instagram.com/api/v1/users/web_profile_info/?username={}"
 
 USER_AGENTS = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Instagram 320.0.0.0 Android (33; 33; SM-S908B; SM-S908B; 33; 33; exynos2200; en_US; 701237498)",
+    "Instagram 319.0.0.0 Android (34; 34; Pixel 8 Pro; Pixel 8 Pro; 34; 34; shiba; en_US; 701237498)",
+    "Instagram 318.0.0.0 Android (33; 33; SM-A546B; SM-A546B; 33; 33; exynos1380; en_US; 701237498)",
+    "Instagram 317.0.0.0 Android (14; 14; SM-S918B; SM-S918B; 14; 14; qcom; en_US; 701237498)",
+    "Instagram 316.0.0.0 Android (33; 33; SM-A536B; SM-A536B; 33; 33; exynos1280; en_US; 701237498)",
+    "Instagram 315.0.0.0 Android (34; 34; Pixel 7a; Pixel 7a; 34; 34; lynx; en_US; 701237498)",
+    "Instagram 314.0.0.0 Android (33; 33; SM-S906B; SM-S906B; 33; 33; exynos2200; en_US; 701237498)",
+    "Instagram 313.0.0.0 Android (33; 33; SM-A546E; SM-A546E; 33; 33; exynos1380; en_US; 701237498)",
+    "Instagram 312.0.0.0 Android (14; 14; Pixel 8; Pixel 8; 14; 14; shiba; en_US; 701237498)",
+    "Instagram 311.0.0.0 Android (33; 33; SM-S916B; SM-S916B; 33; 33; exynos2400; en_US; 701237498)",
 ]
 
 
-def build_headers(user_agent: str = None) -> Dict[str, str]:
-    if user_agent is None:
-        user_agent = random.choice(USER_AGENTS)
+def build_headers() -> Dict[str, str]:
+    user_agent = random.choice(USER_AGENTS)
     return {
         "User-Agent": user_agent,
         "x-ig-app-id": "936619743392459",
